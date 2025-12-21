@@ -1,0 +1,34 @@
+CREATE TABLE CharacterEntity (
+  id TEXT NOT NULL PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  imageType TEXT NOT NULL,
+  imagePath TEXT NOT NULL,
+  isFavorite INTEGER NOT NULL DEFAULT 0
+);
+
+insertCharacter:
+INSERT INTO CharacterEntity(
+  id, title, description, imageType, imagePath
+) VALUES (?, ?, ?, ?, ?);
+
+selectAll:
+SELECT * FROM CharacterEntity;
+
+selectById:
+SELECT *
+FROM CharacterEntity
+WHERE id = ?;
+
+updateFavorite:
+UPDATE CharacterEntity
+SET isFavorite = ?
+WHERE id = ?;
+
+deleteById:
+DELETE FROM CharacterEntity
+WHERE id = ?;
+
+selectFavorites:
+SELECT * FROM CharacterEntity
+WHERE isFavorite = 1;
