@@ -1,5 +1,7 @@
 package fr.clem.tp.app.create
 
+import fr.clem.tp.navigation.Screen
+
 sealed interface CreateIntent {
     data object Init : CreateIntent
     data class TitleChanged(val value: String) : CreateIntent
@@ -10,5 +12,6 @@ sealed interface CreateIntent {
 }
 
 sealed interface CreateEffect {
-    data object NavigateToHome : CreateEffect
+    data object PopBack : CreateEffect
+    data class NavigateTo(val screen: Screen) : CreateEffect
 }

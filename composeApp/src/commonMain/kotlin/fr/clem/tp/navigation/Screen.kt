@@ -5,14 +5,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class Screen {
     @Serializable
-    object Home
+    data object Home : Screen()
 
     @Serializable
     data class Details(val id: String)
 
     @Serializable
-    object Favorites
+    data object Favorites : Screen()
 
     @Serializable
-    object Create
+    data object Create : Screen()
 }

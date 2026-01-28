@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.clem.tp.data.mapper.toDomain
 import fr.clem.tp.domain.usecase.CharacterUseCase
+import fr.clem.tp.navigation.Screen
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -49,16 +50,14 @@ class CreateViewModel(
 
                 viewModelScope.launch {
                     characterUseCase.create(state.value.toDomain())
-                    _effect.send(CreateEffect.NavigateToHome)
+                    sendEffect(CreateEffect.NavigateTo(Screen.Home))
 
                     state.value = CreateState()
                 }
             }
 
             CreateIntent.Back -> {
-                viewModelScope.launch {
-                    _effect.send(CreateEffect.NavigateToHome)
-                }
+                sendEffect(CreateEffect.PopBack)
             }
         }
     }
@@ -70,5 +69,9 @@ class CreateViewModel(
                         newState.description.isNotBlank() &&
                         newState.image != null
         )
+    }
+
+    private fun sendEffect(effect: CreateEffect) {
+        viewModelScope.launch { _effect.send(effect) }
     }
 }

@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -30,24 +29,24 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil3.CoilImage
-import fr.clem.tp.app.home.HomeItem
 import fr.clem.tp.common.ui.TopBar
 import fr.clem.tp.common.ui.toImageModel
+import fr.clem.tp.navigation.Navigator
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun FavoriteScreen(
-    navigateToHome: () -> Unit,
-) {
+fun FavoriteScreen() {
     val viewModel = koinViewModel<FavoriteViewModel>()
     val state by viewModel.state.collectAsState()
+    val navigator = koinInject<Navigator>()
 
     LaunchedEffect(Unit) {
         viewModel.onIntent(FavoriteIntent.Init)
 
         viewModel.effect.collect { effect ->
             when (effect) {
-                FavoriteEffect.NavigateToHome -> navigateToHome()
+                is FavoriteEffect.PopBack -> navigator.goBack()
             }
         }
     }

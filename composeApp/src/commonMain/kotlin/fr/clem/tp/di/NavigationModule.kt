@@ -15,42 +15,8 @@ import org.koin.dsl.navigation3.navigation
 val navigationModule = module {
     single { Navigator(startDestination = Screen.Home) }
 
-    navigation<Screen.Home> {
-        HomeScreen(
-            navigateToDetails = { number ->
-                get<Navigator>().navigateTo(destination = Screen.Details(id = number))
-            },
-            createElement = {
-                get<Navigator>().navigateTo(destination = Screen.Create)
-            },
-            navigateToFavorites = {
-                get<Navigator>().navigateTo(destination = Screen.Favorites)
-            },
-        )
-    }
-
-    navigation<Screen.Details> { screen ->
-        DetailScreen(
-            id = screen.id,
-            goBackToHome = {
-                get<Navigator>().replaceAll(destination = Screen.Home)
-            }
-        )
-    }
-
-    navigation<Screen.Create> { screen ->
-        CreateScreen(
-            navigateToHome = {
-                get<Navigator>().replaceAll(destination = Screen.Home)
-            }
-        )
-    }
-
-    navigation<Screen.Favorites> { screen ->
-        FavoriteScreen(
-            navigateToHome = {
-                get<Navigator>().replaceAll(destination = Screen.Home)
-            }
-        )
-    }
+    navigation<Screen.Home> { HomeScreen() }
+    navigation<Screen.Details> { screen -> DetailScreen(id = screen.id) }
+    navigation<Screen.Create> { CreateScreen() }
+    navigation<Screen.Favorites> { FavoriteScreen() }
 }

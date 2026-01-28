@@ -31,15 +31,18 @@ import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil3.CoilImage
 import fr.clem.tp.common.ui.TopBar
 import fr.clem.tp.common.ui.toImageModel
+import fr.clem.tp.navigation.Navigator
+import fr.clem.tp.navigation.Screen
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun DetailScreen(
     id: String,
-    goBackToHome: () -> Unit,
 ) {
     val viewModel = koinViewModel<DetailViewModel>()
     val state by viewModel.state.collectAsState()
+    val navigator = koinInject<Navigator>()
 
     LaunchedEffect(id) {
         viewModel.onIntent(DetailIntent.Init(id))
@@ -48,7 +51,7 @@ fun DetailScreen(
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                DetailEffect.NavigateToHome -> goBackToHome()
+                is DetailEffect.PopBack -> navigator.goBack()
             }
         }
     }

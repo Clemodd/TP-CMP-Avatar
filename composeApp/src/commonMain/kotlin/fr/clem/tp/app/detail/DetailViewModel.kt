@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.clem.tp.domain.usecase.CharacterUseCase
 import fr.clem.tp.domain.usecase.FavoriteUseCase
+import fr.clem.tp.navigation.Screen
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class DetailViewModel(
@@ -23,40 +25,44 @@ class DetailViewModel(
 
     fun onIntent(intent: DetailIntent) {
         when (intent) {
-            is DetailIntent.Init -> {
-                viewModelScope.launch {
-                    val character = characterUseCase.getById(intent.id)
+            is DetailIntent.Init -> loadCharacter(intent.id)
+            DetailIntent.GoBackToHome -> sendEffect(DetailEffect.PopBack)
+            DetailIntent.ToggleFavorite -> toggleFavorite()
+        }
+    }
 
-                    state.value = state.value.copy(
-                        id = character.id,
-                        title = character.title,
-                        description = character.description,
-                        image = character.image,
-                        isFavorite = character.isFavorite
-                    )
-                }
-            }
+    private fun toggleFavorite() {
+        viewModelScope.launch {
+            val newValue = !state.value.isFavorite
 
-            DetailIntent.GoBackToHome -> {
-                viewModelScope.launch {
-                    _effect.send(DetailEffect.NavigateToHome)
-                }
-            }
+            favoriteUseCase.updateFavorite(
+                id = state.value.id,
+                isFavorite = newValue
+            )
 
-            is DetailIntent.ToggleFavorite -> {
-                viewModelScope.launch {
-                    val newValue = !state.value.isFavorite
+            state.value = state.value.copy(
+                isFavorite = newValue
+            )
+        }
+    }
 
-                    favoriteUseCase.updateFavorite(
-                        id = state.value.id,
-                        isFavorite = newValue
-                    )
 
-                    state.value = state.value.copy(
-                        isFavorite = newValue
-                    )
-                }
+    private fun loadCharacter(id: String) {
+        viewModelScope.launch {
+            val character = characterUseCase.getById(id)
+            state.update {
+                it.copy(
+                    id = character.id,
+                    title = character.title,
+                    description = character.description,
+                    image = character.image,
+                    isFavorite = character.isFavorite,
+                )
             }
         }
+    }
+
+    private fun sendEffect(effect: DetailEffect) {
+        viewModelScope.launch { _effect.send(effect) }
     }
 }

@@ -8,6 +8,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
@@ -22,38 +23,25 @@ class HomeViewModel(
 
     fun onIntent(intent: HomeIntent) {
         when (intent) {
-            HomeIntent.Init -> {
-                viewModelScope.launch {
-                    state.value = state.value.copy(
-                        items = characterUseCase.getAll()
-                            .map { it.toHomeItemUi() }
-                    )
-                }
-            }
+            HomeIntent.Init -> loadCharacters()
+            is HomeIntent.GoToDetails -> sendEffect(HomeEffect.NavigateToDetails(intent.id))
+            HomeIntent.CreateElement -> sendEffect(HomeEffect.NavigateToCreate)
+            HomeIntent.GoToFavorites -> sendEffect(HomeEffect.NavigateToFavorites)
+        }
+    }
 
-            is HomeIntent.GoToDetails -> {
-                viewModelScope.launch {
-                    _effect.send(
-                        HomeEffect.NavigateToDetails(
-                            id = intent.id
-                        )
-                    )
-                }
-            }
-            HomeIntent.CreateElement -> {
-                viewModelScope.launch {
-                    _effect.send(
-                        HomeEffect.NavigateToCreate
-                    )
-                }
-            }
-            HomeIntent.GoToFavorites -> {
-                viewModelScope.launch {
-                    _effect.send(
-                        HomeEffect.NavigateToFavorites
-                    )
-                }
+    private fun loadCharacters() {
+        viewModelScope.launch {
+            try {
+                val items = characterUseCase.getAll().map { it.toHomeItemUi() }
+                state.update { it.copy(items = items) }
+            } catch (e: Exception) {
+                // TODO
             }
         }
+    }
+
+    private fun sendEffect(effect: HomeEffect) {
+        viewModelScope.launch { _effect.send(effect) }
     }
 }

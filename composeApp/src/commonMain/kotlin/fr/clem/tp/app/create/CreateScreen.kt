@@ -35,23 +35,25 @@ import fr.clem.tp.app.create.ui.CreateBottomBar
 import fr.clem.tp.app.home.HomeItem
 import fr.clem.tp.common.ui.TopBar
 import fr.clem.tp.common.ui.toImageModel
+import fr.clem.tp.navigation.Navigator
 import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun CreateScreen(
-    navigateToHome: () -> Unit,
-) {
+fun CreateScreen() {
     val viewModel = koinViewModel<CreateViewModel>()
     val scope = rememberCoroutineScope()
     val state by viewModel.state.collectAsState()
+    val navigator = koinInject<Navigator>()
 
     LaunchedEffect(Unit) {
         viewModel.onIntent(CreateIntent.Init)
 
         viewModel.effect.collect { effect ->
             when (effect) {
-                CreateEffect.NavigateToHome -> navigateToHome()
+                is CreateEffect.PopBack -> navigator.goBack()
+                is CreateEffect.NavigateTo -> navigator.navigateTo(effect.screen)
             }
         }
     }

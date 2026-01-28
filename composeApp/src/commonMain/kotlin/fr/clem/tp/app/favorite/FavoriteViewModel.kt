@@ -2,6 +2,7 @@ package fr.clem.tp.app.favorite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import fr.clem.tp.app.create.CreateEffect
 import fr.clem.tp.data.mapper.toFavoriteItemUi
 import fr.clem.tp.domain.usecase.FavoriteUseCase
 import kotlinx.coroutines.channels.Channel
@@ -32,9 +33,7 @@ class FavoriteViewModel(
             }
 
             FavoriteIntent.Retour -> {
-                viewModelScope.launch {
-                    _effect.send(FavoriteEffect.NavigateToHome)
-                }
+                sendEffect(FavoriteEffect.PopBack)
             }
 
             is FavoriteIntent.ToggleFavorite -> {
@@ -47,7 +46,10 @@ class FavoriteViewModel(
                     )
                 }
             }
-
         }
+    }
+
+    private fun sendEffect(effect: FavoriteEffect) {
+        viewModelScope.launch { _effect.send(effect) }
     }
 }

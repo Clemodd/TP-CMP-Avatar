@@ -1,15 +1,12 @@
 package fr.clem.tp.app.home
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Star
@@ -24,41 +21,32 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil3.CoilImage
-import fr.clem.tp.app.create.UiImage
 import fr.clem.tp.app.create.defaultCreateImages
 import fr.clem.tp.app.home.ui.HomeListItem
-import fr.clem.tp.common.ui.toImageModel
+import fr.clem.tp.navigation.Navigator
+import fr.clem.tp.navigation.Screen
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun HomeScreen(
-    navigateToDetails: (String) -> Unit,
-    createElement: () -> Unit,
-    navigateToFavorites: () -> Unit,
 ) {
     val viewModel = koinViewModel<HomeViewModel>()
     val state by viewModel.state.collectAsState()
+    val navigator = koinInject<Navigator>()
 
     LaunchedEffect(Unit) {
         viewModel.onIntent(HomeIntent.Init)
 
         viewModel.effect.collect { effect ->
             when (effect) {
-                is HomeEffect.NavigateToDetails ->
-                    navigateToDetails(effect.id)
-
-                HomeEffect.NavigateToCreate ->
-                    createElement()
-
-                HomeEffect.NavigateToFavorites ->
-                    navigateToFavorites()
+                is HomeEffect.NavigateToDetails -> navigator.navigateTo(Screen.Details(effect.id))
+                HomeEffect.NavigateToCreate -> navigator.navigateTo(Screen.Create)
+                HomeEffect.NavigateToFavorites -> navigator.navigateTo(Screen.Favorites)
             }
         }
     }
