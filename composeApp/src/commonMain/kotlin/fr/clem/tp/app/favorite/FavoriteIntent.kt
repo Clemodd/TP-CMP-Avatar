@@ -1,8 +1,5 @@
 package fr.clem.tp.app.favorite
 
-import fr.clem.tp.app.create.CreateEffect
-import fr.clem.tp.navigation.Screen
-
 sealed interface FavoriteIntent {
     data object Init : FavoriteIntent
     data object Retour : FavoriteIntent
@@ -12,3 +9,4 @@ sealed interface FavoriteIntent {
 sealed interface FavoriteEffect {
     data object PopBack : FavoriteEffect
 }
+

@@ -1,7 +1,5 @@
 package fr.clem.tp.app.detail
 
-import fr.clem.tp.app.create.CreateEffect
-import fr.clem.tp.navigation.Screen
 
 sealed interface DetailIntent {
     data class Init(val id: String) : DetailIntent

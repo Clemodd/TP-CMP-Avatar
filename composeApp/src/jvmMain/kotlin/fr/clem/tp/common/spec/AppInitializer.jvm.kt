@@ -1,12 +1,10 @@
 package fr.clem.tp.common.spec
 
-import fr.clem.tp.di.initKoin
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 
 actual object AppInitializer {
     actual fun init() {
-        initKoin()
         initLogging()
     }
 
