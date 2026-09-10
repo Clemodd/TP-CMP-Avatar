@@ -10,17 +10,24 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.skydoves.landscapist.coil3.CoilImage
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun HomeScreen() {
+    val viewModel = koinViewModel<HomeViewModel>()
+    val state by viewModel.state.collectAsState()
+
     LaunchedEffect(Unit) {
+        viewModel.onIntent(HomeIntent.Init)
     }
 
-    HomeComposable()
+    HomeComposable(state = state)
 }
 
 @Composable
