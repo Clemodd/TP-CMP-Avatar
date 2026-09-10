@@ -17,6 +17,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun HomeScreen() {
+    // TODO TP2.1 : récupérer HomeViewModel avec Koin
     LaunchedEffect(Unit) {
     }
 

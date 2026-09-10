@@ -5,6 +5,7 @@ import io.github.aakira.napier.Napier
 
 actual object AppInitializer {
     actual fun init() {
+        // TODO TP2.1 : appeler initKoin()
         initLogging()
     }
 

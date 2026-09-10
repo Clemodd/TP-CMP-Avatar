@@ -10,6 +10,7 @@ import org.koin.dsl.module
 val navigationModule = module {
     single { Navigator(startDestination = Screen.Home) }
 
-    // TODO TP3 : navigation<Screen.XXX> { ... }
+    // TODO TP2.1 : Navigation de HomeScreen
+    // TODO TP3 : navigation<Screen.Details>, navigation<Screen.Create>, navigation<Screen.Favorites>
 }
 

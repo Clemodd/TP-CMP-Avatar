@@ -7,6 +7,7 @@ import org.koin.core.component.KoinComponent
 actual object AppInitializer : KoinComponent {
 
     actual fun init() {
+        // TODO TP2.1 : appeler initKoin
         initLogging()
     }
 

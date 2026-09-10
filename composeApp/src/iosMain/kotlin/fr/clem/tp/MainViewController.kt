@@ -6,6 +6,7 @@ import platform.Foundation.NSLog
 fun MainViewController() = ComposeUIViewController(
     configure = {
         try {
+            // TODO TP2.1 : appeler initKoin()
             NSLog("KOIN INIT SUCCESS")
         } catch (e: Throwable) {
             NSLog("KOIN INIT ERROR: %@", e.message ?: "unknown")
