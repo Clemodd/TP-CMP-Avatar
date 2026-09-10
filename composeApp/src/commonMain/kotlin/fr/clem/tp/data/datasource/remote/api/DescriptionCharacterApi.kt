@@ -5,9 +5,8 @@ import io.ktor.client.statement.HttpResponse
 
 class DescriptionCharacterApi(private val client: HttpClient) {
 
-    // TODO TP2
     suspend fun getDescription(): HttpResponse {
-        TODO()
+        TODO("TP2.2 : appel GET vers https://lorem-api.com/api/lorem")
     }
 }
 
