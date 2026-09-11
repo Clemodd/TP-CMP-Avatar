@@ -20,6 +20,15 @@ fun UiImage.toDb(): Pair<String, String> =
         is UiImage.Camera -> ImageType.CAMERA.name to path
     }
 
+fun CharacterEntity.toDomain(): Character =
+    Character(
+        id = id,
+        title = title,
+        description = description,
+        image = toUiImage(),
+        isFavorite = isFavorite == 1L
+    )
+
 fun CreateState.toDomain(): Character =
     Character(
         id = "",
