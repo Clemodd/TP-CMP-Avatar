@@ -1,5 +1,8 @@
 package fr.clem.tp.di
 
+import fr.clem.tp.app.create.CreateViewModel
+import fr.clem.tp.app.detail.DetailViewModel
+import fr.clem.tp.app.favorite.FavoriteViewModel
 import fr.clem.tp.app.home.HomeViewModel
 import fr.clem.tp.data.datasource.local.CharacterLocalDataSource
 import fr.clem.tp.data.datasource.remote.DescriptionRemoteDataSource
@@ -14,6 +17,9 @@ import org.koin.dsl.module
 
 val globalModule = module {
     factory { HomeViewModel(get()) }
+    factory { DetailViewModel(get(), get()) }
+    factory { CreateViewModel(get()) }
+    factory { FavoriteViewModel(get()) }
 
     single { CharacterUseCase(get()) }
     single<CharacterRepository> { CharacterRepositoryImpl(get(), get()) }
@@ -24,6 +30,4 @@ val globalModule = module {
     single { FavoriteUseCase(get(), get()) }
 
     single<HttpClient> { provideHttpClient() }
-
-    // TODO TP3 : DetailViewModel, CreateViewModel, FavoriteViewModel
 }

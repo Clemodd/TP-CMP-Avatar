@@ -1,9 +1,11 @@
 package fr.clem.tp.data.datasource.local
 
 import app.cash.sqldelight.db.SqlDriver
+import app.cash.sqldelight.driver.native.NativeSqliteDriver
+import fr.clem.tp.MyDatabase
 
 actual class DatabaseFactory : DatabaseFactoryPlatform {
 
-    // TODO TP3
-    override fun createDbDriver(): SqlDriver = TODO()
+    override fun createDbDriver(): SqlDriver =
+        NativeSqliteDriver(MyDatabase.Schema, "tp.db")
 }
