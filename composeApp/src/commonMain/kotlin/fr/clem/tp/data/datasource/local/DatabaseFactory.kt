@@ -6,4 +6,4 @@ interface DatabaseFactoryPlatform {
     fun createDbDriver(): SqlDriver
 }
 
-expect class DatabaseFactory
+// TODO TP2.3 : DatabaseFactory

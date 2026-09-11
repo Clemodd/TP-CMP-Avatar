@@ -8,5 +8,5 @@ val globalModule = module {
 
     // TODO TP2.2 : HttpClient, DescriptionCharacterApi, DescriptionRemoteDataSource
     // TODO TP2.2 : CharacterRepository, CharacterUseCase, CharacterLocalDataSource, FavoriteUseCase
-    // TODO TP3 : DetailViewModel, CreateViewModel, FavoriteViewModel
+    // TODO TP2.3 : DetailViewModel, CreateViewModel, FavoriteViewModel
 }
