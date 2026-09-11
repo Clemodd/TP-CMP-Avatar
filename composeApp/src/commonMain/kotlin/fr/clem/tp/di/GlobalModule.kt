@@ -25,5 +25,5 @@ val globalModule = module {
 
     single<HttpClient> { provideHttpClient() }
 
-    // TODO TP3 : DetailViewModel, CreateViewModel, FavoriteViewModel
+    // TODO TP2.3 : DetailViewModel, CreateViewModel, FavoriteViewModel
 }
