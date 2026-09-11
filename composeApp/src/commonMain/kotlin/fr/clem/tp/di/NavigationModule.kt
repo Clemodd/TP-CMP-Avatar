@@ -11,6 +11,6 @@ val navigationModule = module {
     single { Navigator(startDestination = Screen.Home) }
 
     // TODO TP2.1 : Navigation de HomeScreen
-    // TODO TP3 : navigation<Screen.Details>, navigation<Screen.Create>, navigation<Screen.Favorites>
+    // TODO TP2.3 : navigation<Screen.Details>, navigation<Screen.Create>, navigation<Screen.Favorites>
 }
 

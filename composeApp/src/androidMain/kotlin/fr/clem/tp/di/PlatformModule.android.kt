@@ -4,6 +4,6 @@ import org.koin.dsl.module
 
 
 actual val platformModule = module {
-    // TODO TP3 : MyDatabase (AndroidSqliteDriver) + HapticFeedback
+    // TODO TP2.3 : MyDatabase (AndroidSqliteDriver) + HapticFeedback
 }
 
