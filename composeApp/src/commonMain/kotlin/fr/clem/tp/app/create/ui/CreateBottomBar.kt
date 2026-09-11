@@ -16,9 +16,7 @@ fun CreateBottomBar(
 ) {
     Button(
         onClick = onValidateClick,
-        enabled = state.image != null &&
-                state.title.isNotBlank() &&
-                state.description.isNotBlank(),
+        enabled = state.isValid,
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
