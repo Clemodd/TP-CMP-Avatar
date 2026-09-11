@@ -23,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -36,14 +35,12 @@ import fr.clem.tp.app.home.HomeItem
 import fr.clem.tp.common.ui.TopBar
 import fr.clem.tp.common.ui.toImageModel
 import fr.clem.tp.navigation.Navigator
-import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CreateScreen() {
     val viewModel = koinViewModel<CreateViewModel>()
-    val scope = rememberCoroutineScope()
     val state by viewModel.state.collectAsState()
     val navigator = koinInject<Navigator>()
 
@@ -61,21 +58,11 @@ fun CreateScreen() {
     CreateComposable(
         state = state,
         images = defaultCreateImages,
-        onBackClick = {
-            scope.launch { viewModel.onIntent(CreateIntent.Back) }
-        },
-        onValidateClick = {
-            scope.launch { viewModel.onIntent(CreateIntent.Validate) }
-        },
-        onTitleChange = {
-            scope.launch { viewModel.onIntent(CreateIntent.TitleChanged(it)) }
-        },
-        onDescriptionChange = {
-            scope.launch { viewModel.onIntent(CreateIntent.DescriptionChanged(it)) }
-        },
-        onImageSelected = {
-            scope.launch { viewModel.onIntent(CreateIntent.ImageSelected(it.image!!)) }
-        }
+        onBackClick = { viewModel.onIntent(CreateIntent.Back) },
+        onValidateClick = { viewModel.onIntent(CreateIntent.Validate) },
+        onTitleChange = { viewModel.onIntent(CreateIntent.TitleChanged(it)) },
+        onDescriptionChange = { viewModel.onIntent(CreateIntent.DescriptionChanged(it)) },
+        onImageSelected = { viewModel.onIntent(CreateIntent.ImageSelected(it.image!!)) }
     )
 }
 

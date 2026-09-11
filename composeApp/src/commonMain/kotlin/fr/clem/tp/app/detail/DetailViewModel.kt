@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.clem.tp.domain.usecase.CharacterUseCase
 import fr.clem.tp.domain.usecase.FavoriteUseCase
-import fr.clem.tp.navigation.Screen
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,6 +32,8 @@ class DetailViewModel(
     }
 
     private fun toggleFavorite() {
+        if (state.value.id.isBlank()) return
+
         viewModelScope.launch {
             val newValue = !state.value.isFavorite
 
@@ -49,15 +51,20 @@ class DetailViewModel(
 
     private fun loadCharacter(id: String) {
         viewModelScope.launch {
-            val character = characterUseCase.getById(id)
-            state.update {
-                it.copy(
-                    id = character.id,
-                    title = character.title,
-                    description = character.description,
-                    image = character.image,
-                    isFavorite = character.isFavorite,
-                )
+            try {
+                val character = characterUseCase.getById(id)
+                state.update {
+                    it.copy(
+                        id = character.id,
+                        title = character.title,
+                        description = character.description,
+                        image = character.image,
+                        isFavorite = character.isFavorite,
+                    )
+                }
+            } catch (e: Exception) {
+                Napier.e("Failed to load character $id", e)
+                sendEffect(DetailEffect.PopBack)
             }
         }
     }

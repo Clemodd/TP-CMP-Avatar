@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.clem.tp.data.mapper.toHomeItemUi
 import fr.clem.tp.domain.usecase.CharacterUseCase
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,7 +37,7 @@ class HomeViewModel(
                 val items = characterUseCase.getAll().map { it.toHomeItemUi() }
                 state.update { it.copy(items = items) }
             } catch (e: Exception) {
-                // TODO
+                Napier.e("Failed to load characters", e)
             }
         }
     }

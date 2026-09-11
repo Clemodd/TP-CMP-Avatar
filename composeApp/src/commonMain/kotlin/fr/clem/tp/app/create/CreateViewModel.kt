@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import fr.clem.tp.data.mapper.toDomain
 import fr.clem.tp.domain.usecase.CharacterUseCase
 import fr.clem.tp.navigation.Screen
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,6 +30,9 @@ class CreateViewModel(
                     characterUseCase.getDescription()
                         .onSuccess {
                             onIntent(CreateIntent.DescriptionChanged(it))
+                        }
+                        .onFailure {
+                            Napier.e("Failed to fetch description", it)
                         }
                 }
             }

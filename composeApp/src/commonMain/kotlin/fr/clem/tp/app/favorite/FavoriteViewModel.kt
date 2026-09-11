@@ -2,7 +2,6 @@ package fr.clem.tp.app.favorite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fr.clem.tp.app.create.CreateEffect
 import fr.clem.tp.data.mapper.toFavoriteItemUi
 import fr.clem.tp.domain.usecase.FavoriteUseCase
 import kotlinx.coroutines.channels.Channel
@@ -41,8 +40,13 @@ class FavoriteViewModel(
                     favoriteUseCase.updateFavorite(intent.id, intent.isFavorite)
 
                     state.value = state.value.copy(
-                        items = favoriteUseCase.getAllFavorites()
-                            .map { it.toFavoriteItemUi() }
+                        items = if (intent.isFavorite) {
+                            state.value.items.map {
+                                if (it.id == intent.id) it.copy(isFavorite = true) else it
+                            }
+                        } else {
+                            state.value.items.filterNot { it.id == intent.id }
+                        }
                     )
                 }
             }

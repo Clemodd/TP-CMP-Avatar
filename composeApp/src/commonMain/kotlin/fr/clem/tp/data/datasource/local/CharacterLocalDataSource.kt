@@ -2,7 +2,7 @@ package fr.clem.tp.data.datasource.local
 
 import fr.clem.tp.MyDatabase
 import fr.clem.tp.data.mapper.toDb
-import fr.clem.tp.data.mapper.toUiImage
+import fr.clem.tp.data.mapper.toDomain
 import fr.clem.tp.domain.model.Character
 
 class CharacterLocalDataSource(
@@ -11,7 +11,9 @@ class CharacterLocalDataSource(
     private val queries = database.characterQueries
 
     fun insert(character: Character) {
-        val (type, path) = character.image!!.toDb()
+        val (type, path) = requireNotNull(character.image) {
+            "Cannot insert a character without an image"
+        }.toDb()
 
         queries.insertCharacter(
             id = character.id,
@@ -25,28 +27,13 @@ class CharacterLocalDataSource(
     fun getAll(): List<Character> =
         queries.selectAll()
             .executeAsList()
-            .map {
-                Character(
-                    id = it.id,
-                    title = it.title,
-                    description = it.description,
-                    image = it.toUiImage(),
-                    isFavorite = it.isFavorite == 1L
-                )
-            }
+            .map { it.toDomain() }
 
     fun getById(id: String): Character {
         val result = queries.selectById(id).executeAsOneOrNull()
             ?: error("Character with id=$id not found in local database")
 
-
-        return Character(
-            id = result.id,
-            title = result.title,
-            description = result.description,
-            image = result.toUiImage(),
-            isFavorite = result.isFavorite == 1L
-        )
+        return result.toDomain()
     }
 
     fun updateFavorite(id: String, isFavorite: Boolean) {
@@ -63,13 +50,5 @@ class CharacterLocalDataSource(
     fun getFavorites(): List<Character> =
         queries.selectFavorites()
             .executeAsList()
-            .map {
-                Character(
-                    id = it.id,
-                    title = it.title,
-                    description = it.description,
-                    image = it.toUiImage(),
-                    isFavorite = true
-                )
-            }
+            .map { it.toDomain() }
 }
